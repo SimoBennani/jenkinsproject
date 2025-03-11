@@ -12,7 +12,7 @@ pipeline {
   stages {
      stage ('Build'){
          steps {
-             scripts{
+             script{
                  sh '''
                     docker build --no-cache -t : .
                  '''
@@ -22,7 +22,7 @@ pipeline {
 
      stage ('Test'){
          steps {
-             scripts{
+             script{
               sh ''' 
                docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG 
                sleep 5
@@ -36,7 +36,7 @@ pipeline {
 
      stage ('Release'){
          steps {
-             scripts{
+             script{
               sh '''
                docker tag : /:
                echo | docker login -u  --password-stdin
@@ -52,7 +52,7 @@ pipeline {
             SERVER_USERNAME = "ubuntu" 
          }
          steps {
-             scripts{
+             script{
                  timeout(time: 30, unit:"MINUTES"){
                      input message: "deploiement sur review ?",ok: 'Yes'
                  } 
@@ -76,7 +76,7 @@ pipeline {
             SERVER_USERNAME = "ubuntu"
          }
          steps {
-             scripts{
+             script{
               timeout(time: 30, unit:"MINUTES"){
                      input message: "deploiement sur review ?",ok: 'Yes'
               } 
@@ -101,7 +101,7 @@ pipeline {
             SERVER_USERNAME = "ubuntu"
          }
          steps {
-             scripts{
+             script{
               timeout(time: 30, unit:"MINUTES"){
                      input message: "deploiement sur review ?",ok: 'Yes'
               } 
@@ -119,8 +119,8 @@ pipeline {
          }
     }
  }
-         post{
-          always{
+  post{
+      always{
            script
            {
               slackNotifier currentBuild.result
