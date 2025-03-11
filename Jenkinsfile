@@ -8,6 +8,7 @@ pipeline {
   CONTAINER_PORT = 80
   IP_DOCKER = "172.17.0.1"
   DOCKER_HUB_ID = "momo2502"
+  DOCKER_USERNAME = "momo2502"
   }
   agent any
   stages {
@@ -39,9 +40,9 @@ pipeline {
          steps {
              script{
               sh '''
-               docker tag : /:
-               echo | docker login -u  --password-stdin
-               docker push /:
+               docker tag $IMAGE_NAME:$IMAGE_TAG $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG 
+               echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+               docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
              '''
              }
          }
@@ -59,13 +60,13 @@ pipeline {
                  } 
                  sshagent(['key-pair']){
                     sh '''
-                        echo | docker login -u  --password-stdin
-                        ssh -o StrictHostKeyChecking=no -l   docker rm -f  || echo 'All deleted'           
-                        ssh -o StrictHostKeyChecking=no -l   "docker pull /: || echo"Image Downloaded Succesfully"
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker rm -f $IMAGE_NAME || echo 'All deleted"           
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG || echo "Image Downloaded Succesfully"
                         sleep 30
-                        ssh -o StrictHostKeyChecking=no -l   "docker run --rm -dp : --name  /:"
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP "docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name  $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG"
                         sleep 5
-                        curl -I http://:minikube
+                        curl -I http://:$SERVER_IP:$HOST_PORT
                     ''' 
               }
          }
@@ -83,13 +84,13 @@ pipeline {
               } 
                sshagent(['key-pair']){
                     sh '''
-                        echo | docker login -u  --password-stdin
-                        ssh -o StrictHostKeyChecking=no -l   docker rm -f  || echo 'All deleted'
-                        ssh -o StrictHostKeyChecking=no -l   "docker pull /: || echo"Image Downloaded Succesfully"
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker rm -f $IMAGE_NAME || echo 'All deleted"           
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG || echo "Image Downloaded Succesfully"
                         sleep 30
-                        ssh -o StrictHostKeyChecking=no -l   "docker run --rm -dp : --name  /:"
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP "docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name  $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG"
                         sleep 5
-                        curl -I http://:minikube
+                        curl -I http://:$SERVER_IP:$HOST_PORT
                     '''
              }
          }
@@ -108,13 +109,13 @@ pipeline {
               } 
               sshagent(['key-pair']){
                     sh '''
-                        echo | docker login -u  --password-stdin
-                        ssh -o StrictHostKeyChecking=no -l   docker rm -f  || echo 'All deleted'
-                        ssh -o StrictHostKeyChecking=no -l   "docker pull /: || echo"Image Downloaded Succesfully"
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker rm -f $IMAGE_NAME || echo 'All deleted"           
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG || echo "Image Downloaded Succesfully"
                         sleep 30
-                        ssh -o StrictHostKeyChecking=no -l   "docker run --rm -dp : --name  /:"
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP "docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name  $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG"
                         sleep 5
-                        curl -I http://:minikube
+                        curl -I http://:$SERVER_IP:$HOST_PORT 
                     '''
              }
          }
