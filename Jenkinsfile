@@ -15,7 +15,7 @@ pipeline {
          steps {
              script{
                  sh '''
-                    docker build --no-cache -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG .
+                    docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG .
                  '''
              }
          }
