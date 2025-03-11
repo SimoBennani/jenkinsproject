@@ -23,7 +23,7 @@ pipeline {
      stage ('Test'){
          steps {
              scripts{
-               docker run --rm -dp : --name 
+               docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG 
                sleep 5
                curl -I http://
                docker stop 
