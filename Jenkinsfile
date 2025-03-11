@@ -1,4 +1,4 @@
-Library('momo-shared-Library') _
+@Library('momo-shared-Library') _
 pipeline {
  environment{
   IMAGE_NAME = 'webapp'
