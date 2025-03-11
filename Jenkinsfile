@@ -95,7 +95,7 @@ pipeline {
     }
 }
      stage ('Deploy Prod'){
-         #when {expression{GIT_BRANCH == 'origin/prod'}}
+         // when {expression{GIT_BRANCH == 'origin/prod'}}
          environment{
             SERVER_IP = "34.201.150.231"
             SERVER_USERNAME = "ubuntu"
