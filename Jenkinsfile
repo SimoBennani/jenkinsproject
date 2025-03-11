@@ -121,10 +121,10 @@ pipeline {
  }
      post{
       always{
-           script
-           {
+             script
+             {
               slackNotifier currentBuild.result
-           }
+             }
          }
      }
   }
