@@ -70,7 +70,7 @@ pipeline {
          }
      }
  }
-     stage ('Deploy Staging'){
+ stage ('Deploy Staging'){
          environment{
             SERVER_IP = "3.80.41.219"
             SERVER_USERNAME = "ubuntu"
