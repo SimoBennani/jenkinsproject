@@ -1,12 +1,13 @@
 @Library('momo-shared-Library') _
 pipeline {
  environment{
-  IMAGE_NAME = 'webapp'
-  IMAGE_TAG = 'v1'
-  DOCKER_PASSWORD = credentials('docker-password')
+  IMAGE_NAME = "webapp"
+  IMAGE_TAG = "v1"
+  DOCKER_PASSWORD = credentials("docker-password")
   HOST_PORT = 80
   CONTAINER_PORT = 80
-  IP_DOCKER = '172.17.0.1'
+  IP_DOCKER = "172.17.0.1"
+  DOCKER_HUB_ID = "momo2502"
   }
   agent any
   stages {
@@ -14,7 +15,7 @@ pipeline {
          steps {
              script{
                  sh '''
-                    docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG .
+                    docker build --no-cache -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG .
                  '''
              }
          }
