@@ -61,8 +61,8 @@ pipeline {
                  sshagent(['key-pair']){
                     sh '''
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker rm -f $IMAGE_NAME || echo "All deleted""           
-                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG || echo "Image Downloaded Succesfully""
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker rm -f $IMAGE_NAME           
+                        ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP  "docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG"
                         sleep 30
                         ssh -o StrictHostKeyChecking=no -l $SERVER_USERNAME $SERVER_IP "docker run --rm -dp $HOST_PORT:$CONTAINER_PORT --name  $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG"
                         sleep 5
