@@ -1,5 +1,3 @@
-@Library('momo-shared-library')_
-
 pipeline {
     environment {
         IMAGE_NAME = 'webapp'
